@@ -28,7 +28,7 @@ const mainNavItems: NavItem[] = [
       },
     {
         title: 'Payment',
-        href: '/materials',
+        href: '/payment',
         icon: CreditCard, // atau Folder, tergantung preferensi kamu
       },
    

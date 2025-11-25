@@ -39,6 +39,12 @@ class Order extends Model
         return $this->hasMany(Payment::class);
     }
 
+    // Helper untuk mengambil pembayaran terakhir
+    public function getLatestPaymentAttribute()
+    {
+        return $this->payments()->latest()->first();
+    }
+
     /**
      * Hitung total pembayaran yang sudah masuk
      */

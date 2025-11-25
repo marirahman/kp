@@ -5,7 +5,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CustomerController; // <-- Pastikan Controller User di-import
+use App\Http\Controllers\CustomerController; 
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return Inertia::render('welcomeS');
@@ -20,6 +21,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/new-order', [CustomerController::class, 'create'])->name('my.orders.create');
     Route::post('/new-order', [CustomerController::class, 'store'])->name('my.orders.store');
 
+    // Upload Bukti (User)
+    Route::post('/order/{id}/pay', [PaymentController::class, 'store'])->name('payment.store');
+
     // 2. AREA ADMIN (Dilindungi Middleware 'admin')
     // Hanya user dengan role='admin' yang bisa masuk ke sini.
     // Jika user biasa mencoba masuk, mereka akan dilempar ke /my-orders (lihat logic AdminOnly.php)
@@ -27,6 +31,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         // Dashboard Laporan
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
+        Route::post('/payment/{id}/verify', [PaymentController::class, 'verify'])->name('payment.verify');
+        Route::post('/payment/{id}/reject', [PaymentController::class, 'reject'])->name('payment.reject');
 
         // Manajemen Pesanan (Full CRUD)
         Route::prefix('order')->group(function () {
