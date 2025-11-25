@@ -85,7 +85,10 @@ export default function MyOrders({ auth, orders }: { auth: any, orders: any[] })
                     <p className="text-gray-500 mb-6 max-w-sm">
                         Anda belum memiliki riwayat pesanan. Yuk, konsultasikan kebutuhan konstruksi Anda sekarang!
                     </p>
-                    <Link href="/#estimasi" className="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition shadow-lg shadow-blue-200">
+                    <Link 
+                        href={route('my.orders.create')} // Pastikan rute ini ada di web.php
+                        className="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition shadow-lg shadow-blue-200"
+                    >
                         + Buat Pesanan Baru
                     </Link>
                 </div>
