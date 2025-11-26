@@ -17,6 +17,12 @@ export default function OrderDetailView() {
     return Number(angka).toLocaleString("id-ID");
   };
 
+  // --- HITUNG PROFIT ---
+  // Pastikan konversi ke angka agar aman
+  const totalCost = parseFloat(order.total_cost) || 0;
+  const totalPrice = parseFloat(order.total_price) || 0;
+  const profit = totalPrice - totalCost;
+
   // Helper untuk badge status
   const getStatusBadge = (status: string, type: 'work' | 'payment') => {
     if (type === 'work') {
@@ -69,39 +75,33 @@ export default function OrderDetailView() {
           </Link>
         </div>
 
-        {/* === CARD INFORMASI PELANGGAN (Desain Baru) === */}
+        {/* === CARD INFORMASI PELANGGAN & KEUANGAN === */}
         <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg p-6">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
             Informasi Pesanan
           </h2>
-          {/* Grid untuk tata letak yang rapi */}
+          
+          {/* Grid Data Pelanggan */}
           <dl className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-8">
-            {/* Nama Pelanggan */}
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Nama Pelanggan</dt>
               <dd className="mt-1 text-lg font-semibold text-gray-900 dark:text-white">{order.customer_name}</dd>
             </div>
-            {/* Telepon */}
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Nomor HP</dt>
               <dd className="mt-1 text-lg font-semibold text-gray-900 dark:text-white">{order.customer_phone}</dd>
             </div>
-            {/* Tanggal Pesan */}
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Tanggal Pesan</dt>
               <dd className="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
                 {new Date(order.order_date).toLocaleDateString("id-ID", { day: '2-digit', month: 'long', year: 'numeric' })}
               </dd>
             </div>
-            {/* Alamat */}
             <div className="sm:col-span-3">
               <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Alamat</dt>
               <dd className="mt-1 text-base text-gray-700 dark:text-gray-300">{order.customer_address}</dd>
             </div>
             
-            <div className="sm:col-span-1"></div> {/* Spacer */}
-
-            {/* Status Pengerjaan (Badge) */}
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Status Pengerjaan</dt>
               <dd className="mt-2">
@@ -110,7 +110,6 @@ export default function OrderDetailView() {
                 </span>
               </dd>
             </div>
-            {/* Status Pembayaran (Badge) */}
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Status Pembayaran</dt>
               <dd className="mt-2">
@@ -120,6 +119,30 @@ export default function OrderDetailView() {
               </dd>
             </div>
           </dl>
+
+          {/* --- RINGKASAN KEUANGAN (MODAL & PROFIT) --- */}
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-neutral-700 flex flex-col gap-3">
+            <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-1">Ringkasan Keuangan (Admin)</h3>
+            
+            {/* Baris 1: Modal */}
+            <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+              <span>Biaya Modal :</span>
+              <span className="font-mono text-red-500">{formatRupiah(totalCost)}</span>
+            </div>
+
+            {/* Baris 2: Total Harga Jual */}
+            <div className="flex justify-between items-center text-lg text-gray-900 dark:text-white font-bold">
+              <span>Total Harga Jual :</span>
+              <span className="font-mono text-blue-600 dark:text-blue-400">{formatRupiah(totalPrice)}</span>
+            </div>
+
+            {/* Baris 3: Keuntungan */}
+            <div className="flex justify-between items-center bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-4 py-3 rounded-lg font-bold text-base border border-green-100 dark:border-green-800">
+              <span>Keuntungan Bersih :</span>
+              <span className="font-mono">+{formatRupiah(profit)}</span>
+            </div>
+          </div>
+
         </div>
 
         {/* === CARD DETAIL BAHAN (Tabel Modern) === */}
