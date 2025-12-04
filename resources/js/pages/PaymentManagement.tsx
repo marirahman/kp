@@ -108,7 +108,7 @@ export default function PaymentManagement({ payments }: { payments: Payment[] })
                                             <td className="px-6 py-4 whitespace-nowrap text-center">
                                                 <button 
                                                     onClick={() => setPreviewImage(`/storage/${payment.proof_image}`)}
-                                                    className="text-xs bg-gray-100 px-2 py-1 rounded border hover:bg-gray-200 transition"
+                                                    className="text-xs bg-gray px-2 py-1 rounded border hover:bg-gray-500 transition"
                                                 >
                                                     📷 Lihat Foto
                                                 </button>
